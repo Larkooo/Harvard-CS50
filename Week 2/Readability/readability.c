@@ -37,9 +37,9 @@ int main(void)
         }
     }
 
-    #ifdef DEBUG // only for debug
+#ifdef DEBUG // only for debug
     printf("%i letter(s)\n%i word(s)\n%i sentence(s)\n", lettersCount, wordsCount, sentencesCount);
-    #endif
+#endif
 
     int grade = calculateGrade(lettersCount, wordsCount, sentencesCount);
     if (grade > 16) 
