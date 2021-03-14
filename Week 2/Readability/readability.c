@@ -46,6 +46,10 @@ int main(void)
     {
         printf("Grade 16+");
     } 
+    else if (grade < 1)
+    {
+        printf("Before Grade 1");
+    }
     else 
     {
         printf("Grade %i", grade);
