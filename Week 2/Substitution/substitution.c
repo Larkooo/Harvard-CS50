@@ -54,16 +54,14 @@ int main(int argc, string argv[])
     for (int i = 0; i < plaintextLength; i++)
     {
         char character = plaintext[i];
-        char newCharacter;
         if (character >= 'a' && character <= 'z')
         {
-            newCharacter = tolower(key[character - 97]);
+            plaintext[i] = tolower(key[character - 97]);
         }
-        else
+        else if (character != ' ' && character >= 'A' && character <= 'Z')
         {
-            newCharacter = key[character - 65];
+            plaintext[i] = toupper(key[character - 65]);
         }
-        plaintext[i] = newCharacter;
     }
 
     printf("ciphertext: %s\n", plaintext);
