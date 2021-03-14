@@ -25,7 +25,7 @@ int getHeight(void)
     {
         height = get_int("Height: ");
     }
-    while(height < MIN || height > MAX);
+    while (height < MIN || height > MAX);
     return height;
 }
 
