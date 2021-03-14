@@ -25,13 +25,13 @@ int getHeight(void)
     {
         height = get_int("Height: ");
     }
-    while(height < MIN && height > MAX);
+    while(height < MIN || height > MAX);
     return height;
 }
 
 void drawBricks(int height)
 {
-    for (int i = 0; i < height; i++) 
+    for (int i = 1; i <= height; i++) 
     {
         for (int n = 0; n < height - i; n++) 
         {
@@ -41,7 +41,7 @@ void drawBricks(int height)
         {
             printf("#");
         }
-        printf(" ");
+        printf("  ");
         for (int n = 0; n < i; n++) 
         {
             printf("#");
