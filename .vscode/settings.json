@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "cs50.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "cctype": "cpp"
     }
 }
