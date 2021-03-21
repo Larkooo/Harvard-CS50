@@ -1,0 +1,11 @@
+sort1 uses: Bubble sort
+
+How do you know?: Since bubble sort has the omega with the least steps, we can find it by fiding the fastest sorting algorithm in a sorted array
+
+sort2 uses: Merge sort
+
+How do you know?: Merge sort is the fastest when dealing with a big amount of numbers. As we know, the difference between merge sort and other algorithms gets bigger when dealing with a large amount of data
+
+sort3 uses: Selection sort
+
+How do you know?: Selection sort is the slowest algorithm when dealing with a sorted list, we can then guess that its selection sort
