@@ -2,6 +2,7 @@
     "files.associations": {
         "cs50.h": "c",
         "stdio.h": "c",
-        "cctype": "cpp"
+        "cctype": "cpp",
+        "cmath": "c"
     }
 }

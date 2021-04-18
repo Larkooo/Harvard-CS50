@@ -160,6 +160,17 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
 // Detect edges
 void edges(int height, int width, RGBTRIPLE image[height][width])
 {
+    const int8_t GMatrix[3][3] = {
+        {-1, 0, 1},
+        {-2, 0, 2},
+        {-1, 0, 1}
+    };
+    /* const int8_t GyMatrix[3][3] = {
+        {-1, -2, 1},
+        { 0, 0, 0 },
+        { 1, 2, 1 }
+    }; */
+
     // copy of image to do calculations on unblurred pixels
     RGBTRIPLE imagecp[height][width];
 
@@ -170,7 +181,7 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
         // loop through pixels
         for (int p = 0; p < width; p++)
         {
-            // copy pixel to another array, to avoid doing calculations with blurred pixels
+            // copy pixel to another array, to avoid doing calculations with already processed pixels
             imagecp[i][p] = image[i][p];
         }
     }
@@ -181,26 +192,58 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
         // loop through pixels
         for (int p = 0; p < width; p++)
         {
+            // GXs for the pixel
+            int16_t GxRed = 0;
+            int16_t GxGreen = 0;
+            int16_t GxBlue = 0;
+            // GYs for the pixel
+            int16_t GyRed = 0;
+            int16_t GyGreen = 0;
+            int16_t GyBlue = 0;
+
             RGBTRIPLE* pixel = &image[i][p];
+
             // neighbours
-            for (int x = -1; x <= 1; x++)
+            for (int y = -1; y <= 1; y++)
             {
-                for (int y = -1; y <= 1; y++)
+                for (int x = -1; x <= 1; x++)
                 {
-                    if (x == 0 && y == 0) continue;
                     RGBTRIPLE neighbour;
-                    if ((p + x > width || p + x < 0) || (i + y > height || i + y < 0))
+                    // if pixel out of bound
+                    if (p + x > width - 1 || p + x < 0 || i + y > height - 1 || i + y < 0)
                     {
                         neighbour.rgbtRed = 0;
                         neighbour.rgbtGreen = 0;
                         neighbour.rgbtBlue = 0;
-                    } 
+                    }
                     else
                     {
                         neighbour = imagecp[i + y][p + x];
                     }
+
+                    GxRed += GMatrix[y + 1][x + 1] * neighbour.rgbtRed;
+                    GxGreen += GMatrix[y + 1][x + 1] * neighbour.rgbtGreen;
+                    GxBlue += GMatrix[y + 1][x + 1] * neighbour.rgbtBlue;
+
+                    // we just need to switch x and y to "form" the gymatrix
+                    GyRed += GMatrix[x + 1][y + 1] * neighbour.rgbtRed;
+                    GyGreen += GMatrix[x + 1][y + 1] * neighbour.rgbtGreen;
+                    GyBlue += GMatrix[x + 1][y + 1] * neighbour.rgbtBlue;
                 }
             }
+
+            uint16_t finalRed = round(sqrt(powf(GxRed, 2) + powf(GyRed, 2)));
+            if (finalRed > 255) finalRed = 255;
+
+            uint16_t finalGreen = round(sqrt(powf(GxGreen, 2) + powf(GyGreen, 2)));
+            if (finalGreen > 255) finalGreen = 255;
+
+            uint16_t finalBlue = round(sqrt(powf(GxBlue, 2) + powf(GyBlue, 2)));
+            if (finalBlue > 255) finalBlue = 255;
+
+            pixel->rgbtRed = finalRed;
+            pixel->rgbtGreen = finalGreen;
+            pixel->rgbtBlue = finalBlue;
         }
     }
     return;
